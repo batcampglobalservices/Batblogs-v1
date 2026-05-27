@@ -115,7 +115,7 @@ const WelcomeComponent = () => {
                     <div className="mt-7 flex flex-wrap gap-3">
                       <Link
                         to="/posts"
-                        className="rounded-full bg-white px-5 py-3 text-sm font-bold !text-slate-950 shadow-xl shadow-black/20 transition hover:bg-sky-100"
+                        className="rounded-full bg-white px-5 py-3 text-sm font-bold text-black shadow-xl shadow-black/20 transition hover:bg-sky-100"
                       >
                         Explore posts
                       </Link>
