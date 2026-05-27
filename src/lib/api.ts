@@ -52,8 +52,15 @@ type ApiStreamHandlers<T> = {
   onError?: (message: string) => void;
 };
 
-const API_BASE =
-  (process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1").replace(/\/$/, "");
+const API_ORIGIN = (process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1")
+  .replace(/\/$/, "")
+  .replace(/\/api\/v1$/, "");
+
+const buildApiUrl = (path: string) => {
+  const normalizedPath = `/${path}`.replace(/\/+/g, '/').replace(/^\/api\/v1(?=\/|$)/, '');
+
+  return `${API_ORIGIN}/api/v1${normalizedPath}`;
+};
 
 const LOCAL_TOKEN_KEY = "batblogs_token";
 const LOCAL_USER_KEY = "batblogs_user";
@@ -124,7 +131,7 @@ export const apiRequest = async <T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE}${path}`, {
+  const response = await fetch(buildApiUrl(path), {
     ...options,
     headers,
   });
@@ -162,8 +169,9 @@ export const apiStreamRequest = async <T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const separator = path.includes('?') ? '&' : '?';
-  const response = await fetch(`${API_BASE}${path}${separator}stream=1`, {
+  const requestUrl = buildApiUrl(path);
+  const separator = requestUrl.includes('?') ? '&' : '?';
+  const response = await fetch(`${requestUrl}${separator}stream=1`, {
     ...options,
     headers,
   });
