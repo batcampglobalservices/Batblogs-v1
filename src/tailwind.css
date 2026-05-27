@@ -114,6 +114,7 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
+    --radius-full: 9999px;
   }
 }
 @layer base {
@@ -756,7 +757,7 @@
     border-radius: 999px;
   }
   .rounded-full {
-    border-radius: calc(infinity * 1px);
+    border-radius: var(--radius-full);
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
@@ -1709,7 +1710,7 @@
   }
   .file\:rounded-full {
     &::file-selector-button {
-      border-radius: calc(infinity * 1px);
+      border-radius: var(--radius-full);
     }
   }
   .file\:border-0 {

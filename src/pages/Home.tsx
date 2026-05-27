@@ -108,7 +108,7 @@ const HomePage = () => {
                     : 'Waiting for the next standout story to land.',
             },
         ],
-        [featuredPost?.category, posts.length, topics.length]
+        [featuredPost, posts.length, topics.length]
     );
 
     return (
