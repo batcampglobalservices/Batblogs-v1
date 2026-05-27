@@ -66,22 +66,22 @@ const Navbar = () => {
         initial={{ opacity: 0, y: -14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className={`mx-auto max-w-6xl overflow-hidden rounded-4xl border text-white backdrop-blur-xl transition ${
+        className={`mx-auto max-w-6xl overflow-hidden rounded-4xl border transition backdrop-blur-lg ${
           isScrolled
-            ? 'border-white/18 bg-slate-950/90 shadow-[0_18px_48px_rgba(15,23,42,0.22)]'
-            : 'border-white/12 bg-slate-950/72 shadow-[0_12px_34px_rgba(15,23,42,0.16)]'
+            ? 'border-sky-200/60 bg-white/80 shadow-lg text-slate-900 backdrop-blur-xl'
+            : 'border-slate-200 bg-white/95 shadow text-slate-900'
         }`}
       >
         <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
           <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-3xl bg-linear-to-br from-sky-300 via-cyan-200 to-white text-sm font-black text-slate-950 shadow-md shadow-sky-900/20">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-3xl bg-sky-100 text-sm font-black text-sky-700 shadow-md">
               BB
             </span>
             <span>
-              <span className="block text-[10px] uppercase tracking-[0.32em] text-sky-200/80">
+              <span className="block text-[10px] uppercase tracking-[0.32em] text-sky-500/80">
                 Editorial Hub
               </span>
-              <span className="block text-lg font-black tracking-tight text-white">
+              <span className="block text-lg font-black tracking-tight text-slate-900">
                 BatBlogs
               </span>
             </span>
