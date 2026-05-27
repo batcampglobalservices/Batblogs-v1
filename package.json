@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-oauth/google": "^0.13.5",
+    "@tanstack/react-query": "^5.100.14",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
@@ -11,14 +13,22 @@
     "@types/node": "^16.7.13",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "framer-motion": "^12.40.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-router-dom": "^7.15.1",
     "react-scripts": "5.0.1",
+    "recharts": "^3.8.1",
+    "sass": "^1.100.0",
+    "swiper": "^12.1.4",
+    "tailwindcss": "^4.3.0",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
+    "tailwind:build": "tailwindcss -i ./src/tailwind.input.css -o ./src/tailwind.css",
+    "tailwind:watch": "tailwindcss -i ./src/tailwind.input.css -o ./src/tailwind.css --watch",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -40,5 +50,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "main": "index.js",
+  "author": "bakpobatombari <batcampglobalservices@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.0"
   }
 }
