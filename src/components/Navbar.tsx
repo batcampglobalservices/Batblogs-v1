@@ -14,17 +14,17 @@ const signedInLinks = [
 ];
 
 const desktopLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-3xl px-4 py-2 text-sm font-semibold transition ${
+  `rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-150 ${
     isActive
-      ? 'bg-white text-slate-950 shadow-sm'
-      : 'text-slate-200 hover:bg-white/10 hover:text-white'
+      ? 'bg-slate-100 text-slate-900'
+      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
   }`;
 
 const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `block rounded-3xl px-4 py-3 text-sm font-semibold transition ${
+  `block rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-150 ${
     isActive
-      ? 'bg-sky-100 text-slate-950'
-      : 'text-slate-200 hover:bg-white/8 hover:text-white'
+      ? 'bg-slate-100 text-slate-900'
+      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
   }`;
 
 const Navbar = () => {
@@ -61,30 +61,17 @@ const Navbar = () => {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 px-3 pt-3 sm:px-4 md:px-6">
+    <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
       <motion.div
         initial={{ opacity: 0, y: -14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className={`mx-auto max-w-6xl overflow-hidden rounded-4xl border transition backdrop-blur-lg ${
-          isScrolled
-            ? 'border-sky-200/60 bg-white/80 shadow-lg text-slate-900 backdrop-blur-xl'
-            : 'border-slate-200 bg-white/95 shadow text-slate-900'
-        }`}
+        className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-5"
       >
         <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
-          <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-3xl bg-sky-100 text-sm font-black text-sky-700 shadow-md">
-              BB
-            </span>
-            <span>
-              <span className="block text-[10px] uppercase tracking-[0.32em] text-sky-500/80">
-                Editorial Hub
-              </span>
-              <span className="block text-lg font-black tracking-tight text-slate-900">
-                BatBlogs
-              </span>
-            </span>
+          <Link to="/" className="flex items-center gap-2 group" onClick={closeMenu}>
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-base font-bold text-white group-hover:bg-slate-700 transition">BB</span>
+            <span className="text-lg font-bold text-slate-900 tracking-tight">BatBlogs</span>
           </Link>
 
           <div className="hidden items-center gap-1 lg:flex">
@@ -116,13 +103,13 @@ const Navbar = () => {
           <div className="hidden items-center gap-2 lg:flex">
             {user ? (
               <>
-                <div className="rounded-3xl border border-white/12 bg-white/8 px-4 py-2 text-sm text-slate-200">
+                <div className="rounded-lg bg-slate-100 px-4 py-2 text-sm text-slate-700 font-medium">
                   @{user.username}
                 </div>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="rounded-3xl border border-white/12 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:bg-white/10 hover:text-white"
+                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                 >
                   Logout
                 </button>
@@ -134,7 +121,7 @@ const Navbar = () => {
                 </NavLink>
                 <NavLink
                   to="/register"
-                  className="rounded-3xl bg-linear-to-r from-sky-300 to-cyan-200 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:brightness-105"
+                  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
                 >
                   Register
                 </NavLink>
@@ -145,27 +132,15 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => setIsMenuOpen((current) => !current)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-3xl border border-white/12 bg-white/8 text-white lg:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-900 lg:hidden"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
-            <span className="relative h-5 w-5">
-              <span
-                className={`absolute left-0 top-1/2 block h-0.5 w-5 -translate-y-2 bg-current transition ${
-                  isMenuOpen ? 'translate-y-0 rotate-45' : ''
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-1/2 block h-0.5 w-5 bg-current transition ${
-                  isMenuOpen ? 'opacity-0' : ''
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-1/2 block h-0.5 w-5 translate-y-2 bg-current transition ${
-                  isMenuOpen ? 'translate-y-0 -rotate-45' : ''
-                }`}
-              />
-            </span>
+            <svg width="22" height="22" fill="none" viewBox="0 0 22 22" stroke="currentColor" strokeWidth="2">
+              <line x1="4" y1="7" x2="18" y2="7" />
+              <line x1="4" y1="11" x2="18" y2="11" />
+              <line x1="4" y1="15" x2="18" y2="15" />
+            </svg>
           </button>
         </div>
 
@@ -176,7 +151,7 @@ const Navbar = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.28, ease: 'easeOut' }}
-              className="overflow-hidden border-t border-white/10 lg:hidden"
+              className="overflow-hidden border-t border-slate-200 bg-white lg:hidden"
             >
               <div className="space-y-2 px-3 py-3">
                 {primaryLinks.map((link) => (
@@ -211,13 +186,13 @@ const Navbar = () => {
 
                 {user ? (
                   <>
-                    <div className="rounded-3xl border border-white/10 bg-white/6 px-4 py-3 text-sm text-slate-200">
+                    <div className="rounded-lg bg-slate-100 px-4 py-3 text-sm text-slate-700 font-medium">
                       Logged in as @{user.username}
                     </div>
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="w-full rounded-3xl border border-white/12 px-4 py-3 text-left text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+                      className="w-full rounded-lg border border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                     >
                       Logout
                     </button>
@@ -229,7 +204,7 @@ const Navbar = () => {
                     </NavLink>
                     <NavLink
                       to="/register"
-                      className="block rounded-3xl bg-linear-to-r from-sky-300 to-cyan-200 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-105"
+                      className="block rounded-lg bg-slate-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
                       onClick={closeMenu}
                     >
                       Register

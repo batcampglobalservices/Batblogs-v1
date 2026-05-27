@@ -74,7 +74,7 @@ const BlogsList = ({ topics, isLoading = false }: BlogsListProps) => {
                     <div className="mt-5">
                       <Link
                         to={`/posts?category=${encodeURIComponent(topic.name)}`}
-                        className="inline-flex w-full rounded-2xl bg-slate-900 px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-sky-600"
+                        className="inline-flex w-full rounded-2xl bg-slate-300 px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-sky-600"
                       >
                         Explore topic
                       </Link>

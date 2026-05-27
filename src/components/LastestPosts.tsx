@@ -39,7 +39,7 @@ const LastestPosts = ({
 
           <Link
             to="/posts"
-            className="inline-flex w-full rounded-2xl bg-slate-900 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-sky-600 sm:w-auto"
+            className="inline-flex w-full rounded-2xl bg-slate-300 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-sky-600 sm:w-auto"
           >
             Browse All Posts
           </Link>
