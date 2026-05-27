@@ -158,11 +158,11 @@ const initialCategoryForm: CategoryFormState = {
   isActive: true,
 };
 
-const panelClass = 'rounded-4xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/60';
-const softPanelClass = 'rounded-4xl border border-slate-200/80 bg-stone-50/80';
+const panelClass = 'rounded-[1.75rem] border border-slate-200/80 bg-white/95 shadow-xl shadow-slate-900/5 backdrop-blur';
+const softPanelClass = 'rounded-[1.25rem] border border-slate-200/80 bg-slate-50/80';
 const secondaryTextClass = 'text-sm leading-6 text-slate-500';
 const adminInputClass =
-  'w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-cyan-400 focus:bg-white';
+  'w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:bg-sky-50/40';
 
 const uploadImage = async (file: File) => {
   const formData = new FormData();
@@ -270,22 +270,22 @@ const SuperAdminDashboard = () => {
     : [];
 
   const loadAnalytics = async () => {
-    const data = await apiRequest<AnalyticsPayload>('/superadmin/analytics?days=14');
+    const data = await apiRequest<AnalyticsPayload>('/api/v1/superadmin/analytics?days=14');
     setAnalytics(data);
   };
 
   const loadUsers = async () => {
-    const data = await apiRequest<UsersResponse>('/superadmin/users?limit=60');
+    const data = await apiRequest<UsersResponse>('/api/v1/superadmin/users?limit=60');
     setUsers(data.users);
   };
 
   const loadPosts = async () => {
-    const data = await apiRequest<PostsResponse>('/superadmin/posts?limit=100');
+    const data = await apiRequest<PostsResponse>('/api/v1/superadmin/posts?limit=100');
     setPosts(data.posts);
   };
 
   const loadCategories = async () => {
-    const data = await apiRequest<CategoriesResponse>('/categories?active=false');
+    const data = await apiRequest<CategoriesResponse>('/api/v1/categories?active=false');
     setCategories(data.categories);
   };
 
@@ -294,7 +294,7 @@ const SuperAdminDashboard = () => {
 
     try {
       const data = await apiRequest<AiHistoryResponse>(
-        '/ai/history?scope=all&limit=12&feature=moderation-review'
+        '/api/v1/ai/history?scope=all&limit=12&feature=moderation-review'
       );
       setAiHistory(data.history);
     } catch {
@@ -326,7 +326,7 @@ const SuperAdminDashboard = () => {
   useEffect(() => {
     const refreshInMs = (analytics?.refreshInSeconds || 15) * 1000;
     const interval = window.setInterval(() => {
-      apiRequest<AnalyticsPayload>('/superadmin/analytics?days=14')
+      apiRequest<AnalyticsPayload>('/api/v1/superadmin/analytics?days=14')
         .then(setAnalytics)
         .catch(() => undefined);
     }, refreshInMs);
@@ -339,7 +339,7 @@ const SuperAdminDashboard = () => {
     setIsBusy(true);
 
     try {
-      await apiRequest('/superadmin/users', {
+      await apiRequest('/api/v1/superadmin/users', {
         method: 'POST',
         body: JSON.stringify(newUser),
       });
@@ -370,7 +370,7 @@ const SuperAdminDashboard = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/users/${userId}/ban`, {
+      await apiRequest(`/api/v1/superadmin/users/${userId}/ban`, {
         method: 'PATCH',
         body: JSON.stringify({ reason }),
       });
@@ -387,7 +387,7 @@ const SuperAdminDashboard = () => {
   const handleUnbanUser = async (userId: string) => {
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/users/${userId}/unban`, {
+      await apiRequest(`/api/v1/superadmin/users/${userId}/unban`, {
         method: 'PATCH',
       });
       setNotice('User unbanned successfully.');
@@ -409,7 +409,7 @@ const SuperAdminDashboard = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/users/${userId}`, {
+      await apiRequest(`/api/v1/superadmin/users/${userId}`, {
         method: 'DELETE',
         body: JSON.stringify({ reason }),
       });
@@ -431,7 +431,7 @@ const SuperAdminDashboard = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/posts/${postId}/delete`, {
+      await apiRequest(`/api/v1/superadmin/posts/${postId}/delete`, {
         method: 'PATCH',
         body: JSON.stringify({ reason }),
       });
@@ -455,7 +455,7 @@ const SuperAdminDashboard = () => {
 
     try {
       const data = await apiStreamRequest<ModerationReviewResponse>(
-        '/ai/moderation-review',
+        '/api/v1/ai/moderation-review',
         {
           method: 'POST',
           body: JSON.stringify({ postId }),
@@ -532,13 +532,13 @@ const SuperAdminDashboard = () => {
       });
 
       if (editingCategoryId) {
-        await apiRequest(`/categories/${editingCategoryId}`, {
+        await apiRequest(`/api/v1/categories/${editingCategoryId}`, {
           method: 'PATCH',
           body,
         });
         setNotice('Category updated successfully.');
       } else {
-        await apiRequest('/categories', {
+        await apiRequest('/api/v1/categories', {
           method: 'POST',
           body,
         });
@@ -572,7 +572,7 @@ const SuperAdminDashboard = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/categories/${categoryId}`, {
+      await apiRequest(`/api/v1/categories/${categoryId}`, {
         method: 'DELETE',
       });
       setNotice('Category deleted successfully.');
@@ -586,36 +586,35 @@ const SuperAdminDashboard = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-stone-100 px-4 py-8 text-slate-900 sm:px-6 md:px-10 md:py-12">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-linear-to-br from-amber-100 via-stone-100 to-cyan-50" />
-      <div className="pointer-events-none absolute -left-16 top-48 h-64 w-64 rounded-4xl bg-amber-200/60 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 top-28 h-72 w-72 rounded-4xl bg-cyan-200/60 blur-3xl" />
+    <section className="relative overflow-hidden bg-slate-100 px-4 py-8 text-slate-900 sm:px-6 md:px-10 md:py-12">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-[linear-gradient(180deg,#e0f2fe_0%,#f8fafc_58%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.05)_1px,transparent_1px)] bg-[size:42px_42px] opacity-60" />
 
       <div className="relative mx-auto max-w-7xl space-y-6">
-        <div className={`${panelClass} overflow-hidden`}>
-          <div className="grid gap-6 p-6 lg:grid-cols-[1.2fr_0.8fr] lg:p-8">
+        <div className="overflow-hidden rounded-[2rem] border border-slate-200/80 bg-slate-950 shadow-2xl shadow-slate-900/15">
+          <div className="grid gap-6 p-6 text-white lg:grid-cols-[1.2fr_0.8fr] lg:p-8">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-700">
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-sky-300">
                 Superadmin Desk
               </p>
-              <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-                Production control, split into clear sections instead of one long page.
+              <h1 className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-white sm:text-4xl">
+                Clean platform control for users, publishing, taxonomy, and AI moderation.
               </h1>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
-                Navigate analytics, users, categories, blog inventory, and moderation from the sidebar. The layout is built to stay readable on phones, tablets, and large screens.
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
+                Move between live analytics, account operations, category management, blog inventory, and moderation with a dashboard designed for repeated admin work.
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   onClick={() => handleRefresh().catch(() => setNotice('Could not refresh dashboard.'))}
-                  className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  className="rounded-full bg-white px-5 py-3 text-sm font-bold !text-slate-950 transition hover:bg-sky-100"
                 >
                   Refresh dashboard
                 </button>
-                <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
+                <div className="rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm text-slate-300">
                   Last generated:{' '}
-                  <span className="font-semibold text-slate-900">
+                  <span className="font-semibold text-white">
                     {analytics?.generatedAt
                       ? new Date(analytics.generatedAt).toLocaleString()
                       : 'Loading...'}
@@ -624,24 +623,24 @@ const SuperAdminDashboard = () => {
               </div>
 
               {notice && (
-                <div className="mt-5 rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm text-cyan-900">
+                <div className="mt-5 rounded-2xl border border-sky-300/40 bg-sky-400/10 px-4 py-3 text-sm text-sky-100">
                   {notice}
                 </div>
               )}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-              <div className="rounded-4xl bg-slate-950 px-5 py-5 text-white">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Active users</p>
+              <div className="rounded-[1.5rem] border border-white/10 bg-white/10 px-5 py-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-300">Active users</p>
                 <p className="mt-3 text-3xl font-black">{analytics?.overview.activeUsers ?? '--'}</p>
                 <p className="mt-2 text-sm text-slate-300">Healthy accounts currently able to publish and interact.</p>
               </div>
-              <div className="rounded-4xl bg-white px-5 py-5 ring-1 ring-slate-200">
+              <div className="rounded-[1.5rem] border border-white/10 bg-white px-5 py-5 text-slate-950">
                 <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Draft posts</p>
-                <p className="mt-3 text-3xl font-black text-amber-700">{analytics?.overview.draftPosts ?? '--'}</p>
+                <p className="mt-3 text-3xl font-black text-sky-700">{analytics?.overview.draftPosts ?? '--'}</p>
                 <p className="mt-2 text-sm text-slate-500">Unpublished work waiting for edits or approval.</p>
               </div>
-              <div className="rounded-4xl bg-white px-5 py-5 ring-1 ring-slate-200">
+              <div className="rounded-[1.5rem] border border-white/10 bg-white px-5 py-5 text-slate-950">
                 <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Removed posts</p>
                 <p className="mt-3 text-3xl font-black text-rose-600">{analytics?.overview.deletedPosts ?? '--'}</p>
                 <p className="mt-2 text-sm text-slate-500">Permanent moderation actions recorded on the platform.</p>
@@ -664,10 +663,10 @@ const SuperAdminDashboard = () => {
                     key={section.id}
                     type="button"
                     onClick={() => setActiveSection(section.id)}
-                    className={`min-w-55 rounded-3xl border px-4 py-4 text-left transition xl:min-w-0 ${
+                    className={`min-w-55 rounded-[1.25rem] border px-4 py-4 text-left transition xl:min-w-0 ${
                       activeSection === section.id
-                        ? 'border-slate-950 bg-slate-950 text-white'
-                        : 'border-slate-200 bg-white text-slate-700 hover:border-cyan-300 hover:text-cyan-700'
+                        ? 'border-slate-950 bg-slate-950 !text-white shadow-lg shadow-slate-900/10'
+                        : 'border-slate-200 bg-white !text-slate-700 hover:border-sky-300 hover:!text-sky-700'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3">
@@ -675,7 +674,7 @@ const SuperAdminDashboard = () => {
                       <span
                         className={`rounded-2xl px-2.5 py-1 text-xs font-semibold ${
                           activeSection === section.id
-                            ? 'bg-white/12 text-white'
+                            ? 'bg-white/15 text-white'
                             : 'bg-slate-100 text-slate-600'
                         }`}
                       >
@@ -711,7 +710,7 @@ const SuperAdminDashboard = () => {
 
                 <div className="grid gap-6 xl:grid-cols-2">
                   <div className={`${panelClass} min-w-0 p-6`}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700">Growth trend</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Growth trend</p>
                     <h2 className="mt-2 text-xl font-bold text-slate-950">Users and posts over the last 14 days</h2>
                     <p className={`mt-2 ${secondaryTextClass}`}>
                       The key movement stays visible first, with exact values on hover.
@@ -723,15 +722,15 @@ const SuperAdminDashboard = () => {
                           <XAxis dataKey="date" stroke="#64748b" />
                           <YAxis allowDecimals={false} stroke="#64748b" />
                           <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#dbe4ee', color: '#0f172a', borderRadius: '18px' }} />
-                          <Line type="monotone" dataKey="users" stroke="#0891b2" strokeWidth={3} dot={false} />
-                          <Line type="monotone" dataKey="posts" stroke="#f59e0b" strokeWidth={3} dot={false} strokeDasharray="6 6" />
+                          <Line type="monotone" dataKey="users" stroke="#0284c7" strokeWidth={3} dot={false} />
+                          <Line type="monotone" dataKey="posts" stroke="#0f172a" strokeWidth={3} dot={false} strokeDasharray="6 6" />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
 
                   <div className={`${panelClass} min-w-0 p-6`}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-700">Content mix</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Content mix</p>
                     <h2 className="mt-2 text-xl font-bold text-slate-950">Post volume by category</h2>
                     <p className={`mt-2 ${secondaryTextClass}`}>
                       Category balance is easier to compare with a taller, calmer bar layout.
@@ -752,7 +751,7 @@ const SuperAdminDashboard = () => {
 
                 <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
                   <div className={`${panelClass} p-6`}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700">Top authors</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Top authors</p>
                     <h2 className="mt-2 text-xl font-bold text-slate-950">Who is driving published output</h2>
                     <div className="mt-5 space-y-3">
                       {analytics.topAuthors.map((author, index) => (
@@ -858,7 +857,7 @@ const SuperAdminDashboard = () => {
                         <option value="superadmin">superadmin</option>
                       </select>
                       <input value={newUser.socialLinks} onChange={(event) => setNewUser((current) => ({ ...current, socialLinks: event.target.value }))} placeholder="Social links (comma or line separated)" className={`${adminInputClass} sm:col-span-2`} />
-                      <button type="submit" disabled={isBusy} className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60 sm:col-span-2">
+                      <button type="submit" disabled={isBusy} className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold !text-white transition hover:bg-slate-800 disabled:opacity-60 sm:col-span-2">
                         {isBusy ? 'Processing...' : 'Register user'}
                       </button>
                     </form>
@@ -887,15 +886,15 @@ const SuperAdminDashboard = () => {
 
                           <div className="flex flex-wrap gap-2">
                             {user.isBanned ? (
-                              <button type="button" onClick={() => handleUnbanUser(user.id)} className="rounded-2xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-100">
+                              <button type="button" onClick={() => handleUnbanUser(user.id)} className="rounded-2xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-xs font-semibold !text-emerald-800 transition hover:bg-emerald-100">
                                 Unban account
                               </button>
                             ) : (
-                              <button type="button" onClick={() => handleBanUser(user.id)} className="rounded-2xl border border-amber-200 bg-amber-50 px-3.5 py-2 text-xs font-semibold text-amber-700 transition hover:bg-amber-100">
+                              <button type="button" onClick={() => handleBanUser(user.id)} className="rounded-2xl border border-amber-200 bg-amber-50 px-3.5 py-2 text-xs font-semibold !text-amber-800 transition hover:bg-amber-100">
                                 Ban user
                               </button>
                             )}
-                            <button type="button" onClick={() => handleDeleteUser(user.id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
+                            <button type="button" onClick={() => handleDeleteUser(user.id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold !text-rose-800 transition hover:bg-rose-100">
                               Erase user
                             </button>
                           </div>
@@ -935,11 +934,11 @@ const SuperAdminDashboard = () => {
                     </label>
 
                     <div className="flex flex-col gap-3 sm:flex-row">
-                      <button type="submit" disabled={isBusy} className="flex-1 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60">
+                      <button type="submit" disabled={isBusy} className="flex-1 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold !text-white transition hover:bg-slate-800 disabled:opacity-60">
                         {isBusy ? 'Processing...' : editingCategoryId ? 'Save category changes' : 'Create category'}
                       </button>
                       {editingCategoryId && (
-                        <button type="button" onClick={resetCategoryEditor} className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                        <button type="button" onClick={resetCategoryEditor} className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold !text-slate-800 transition hover:bg-slate-50">
                           Cancel edit
                         </button>
                       )}
@@ -970,10 +969,10 @@ const SuperAdminDashboard = () => {
                               {category.description || categoryMeta.description}
                             </p>
                             <div className="mt-5 flex flex-wrap gap-2">
-                              <button type="button" onClick={() => handleEditCategory(category)} className="rounded-2xl border border-cyan-200 bg-cyan-50 px-3.5 py-2 text-xs font-semibold text-cyan-800 transition hover:bg-cyan-100">
+                              <button type="button" onClick={() => handleEditCategory(category)} className="rounded-2xl border border-sky-200 bg-sky-50 px-3.5 py-2 text-xs font-semibold !text-sky-800 transition hover:bg-sky-100">
                                 Edit category
                               </button>
-                              <button type="button" onClick={() => handleDeleteCategory(category._id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
+                              <button type="button" onClick={() => handleDeleteCategory(category._id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold !text-rose-800 transition hover:bg-rose-100">
                                 Delete category
                               </button>
                             </div>
@@ -1002,7 +1001,7 @@ const SuperAdminDashboard = () => {
                       <input value={postSearch} onChange={(event) => setPostSearch(event.target.value)} placeholder="Search title, slug, category, author" className={adminInputClass} />
                       <div className="flex flex-wrap gap-2">
                         {(['all', 'draft', 'published'] as Array<'all' | 'draft' | 'published'>).map((filter) => (
-                          <button key={filter} type="button" onClick={() => setPostFilter(filter)} className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${postFilter === filter ? 'bg-slate-950 text-white' : 'border border-slate-200 bg-white text-slate-700 hover:border-cyan-300 hover:text-cyan-700'}`}>
+                          <button key={filter} type="button" onClick={() => setPostFilter(filter)} className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${postFilter === filter ? 'bg-slate-950 !text-white' : 'border border-slate-200 bg-white !text-slate-800 hover:border-sky-300 hover:!text-sky-700'}`}>
                             {filter === 'all' ? 'All' : filter === 'draft' ? 'Drafts' : 'Published'}
                           </button>
                         ))}
@@ -1031,13 +1030,13 @@ const SuperAdminDashboard = () => {
                             {post.excerpt || 'No excerpt available for this post yet.'}
                           </p>
                           <div className="mt-5 flex flex-wrap gap-2">
-                            <button type="button" onClick={() => handleModerationReview(post._id)} className="rounded-2xl border border-cyan-200 bg-cyan-50 px-3.5 py-2 text-xs font-semibold text-cyan-800 transition hover:bg-cyan-100">
+                            <button type="button" onClick={() => handleModerationReview(post._id)} className="rounded-2xl border border-sky-200 bg-sky-50 px-3.5 py-2 text-xs font-semibold !text-sky-800 transition hover:bg-sky-100">
                               {isModerationLoading && moderationTargetPostId === post._id ? 'Reviewing...' : 'Run AI review'}
                             </button>
-                            <Link to={`/posts/${post.slug}`} className="rounded-2xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition hover:border-cyan-300 hover:text-cyan-700">
+                            <Link to={`/posts/${post.slug}`} className="rounded-2xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold !text-slate-800 transition hover:border-sky-300 hover:!text-sky-700">
                               Open post
                             </Link>
-                            <button type="button" onClick={() => handleDeletePost(post._id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
+                            <button type="button" onClick={() => handleDeletePost(post._id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold !text-rose-800 transition hover:bg-rose-100">
                               Delete with reason
                             </button>
                           </div>
@@ -1189,10 +1188,10 @@ const SuperAdminDashboard = () => {
                                 <p className="mt-1 text-xs text-slate-500">/{post.slug} · @{post.author?.username || 'unknown'}</p>
                               </div>
                               <div className="flex flex-wrap gap-2">
-                                <button type="button" onClick={() => handleModerationReview(post._id)} className="rounded-2xl border border-cyan-200 bg-cyan-50 px-3.5 py-2 text-xs font-semibold text-cyan-800 transition hover:bg-cyan-100">
+                                <button type="button" onClick={() => handleModerationReview(post._id)} className="rounded-2xl border border-sky-200 bg-sky-50 px-3.5 py-2 text-xs font-semibold !text-sky-800 transition hover:bg-sky-100">
                                   {isModerationLoading && moderationTargetPostId === post._id ? 'Reviewing...' : 'Run AI review'}
                                 </button>
-                                <button type="button" onClick={() => handleDeletePost(post._id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
+                                <button type="button" onClick={() => handleDeletePost(post._id)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-semibold !text-rose-800 transition hover:bg-rose-100">
                                   Delete
                                 </button>
                               </div>

@@ -13,18 +13,20 @@ const signedInLinks = [
   { label: 'New Post', to: '/new-blog' },
 ];
 
+const logoSrc = `${process.env.PUBLIC_URL}/new_modern-logo.png`;
+
 const desktopLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-150 ${
+  `rounded-full px-4 py-2 text-sm font-semibold transition duration-150 ${
     isActive
-      ? 'bg-slate-100 text-slate-900'
-      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+      ? 'bg-slate-950 !text-white shadow-lg shadow-slate-900/10'
+      : '!text-slate-600 hover:bg-white hover:!text-slate-950'
   }`;
 
 const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `block rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-150 ${
+  `block rounded-2xl px-4 py-3 text-sm font-semibold transition-colors duration-150 ${
     isActive
-      ? 'bg-slate-100 text-slate-900'
-      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+      ? 'bg-slate-950 !text-white'
+      : '!text-slate-700 hover:bg-slate-50 hover:!text-slate-900'
   }`;
 
 const Navbar = () => {
@@ -61,20 +63,28 @@ const Navbar = () => {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
+    <nav
+      className={`sticky top-0 z-50 w-full backdrop-blur-xl transition ${
+        isScrolled
+          ? 'bg-white/90 shadow-xl shadow-slate-900/8'
+          : 'bg-white/72 shadow-sm shadow-white/60'
+      }`}
+    >
       <motion.div
         initial={{ opacity: 0, y: -14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-5"
+        className="mx-auto flex w-full max-w-6xl flex-col px-4 py-3 sm:px-6 lg:px-0"
       >
-        <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
+        <div className="flex w-full items-center justify-between gap-3">
           <Link to="/" className="flex items-center gap-2 group" onClick={closeMenu}>
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-base font-bold text-white group-hover:bg-slate-700 transition">BB</span>
-            <span className="text-lg font-bold text-slate-900 tracking-tight">BatBlogs</span>
+            <span className="inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 shadow-lg shadow-slate-900/20 transition group-hover:shadow-sky-700/20">
+              <img src={logoSrc} alt="BatCamp Global Services logo" className="h-full w-full object-cover" />
+            </span>
+            <span className="text-lg font-black tracking-tight text-slate-950">BatCamp Blogs</span>
           </Link>
 
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden items-center gap-1 rounded-full bg-white/82 p-1 shadow-inner shadow-slate-900/8 lg:flex">
             {primaryLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -103,13 +113,13 @@ const Navbar = () => {
           <div className="hidden items-center gap-2 lg:flex">
             {user ? (
               <>
-                <div className="rounded-lg bg-slate-100 px-4 py-2 text-sm text-slate-700 font-medium">
+                <div className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm shadow-slate-900/8">
                   @{user.username}
                 </div>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                  className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm shadow-slate-900/8 transition hover:bg-rose-50 hover:text-rose-700"
                 >
                   Logout
                 </button>
@@ -121,7 +131,7 @@ const Navbar = () => {
                 </NavLink>
                 <NavLink
                   to="/register"
-                  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+                  className="rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold !text-white shadow-lg shadow-slate-900/10 transition hover:bg-sky-700"
                 >
                   Register
                 </NavLink>
@@ -132,7 +142,7 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => setIsMenuOpen((current) => !current)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-900 lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-slate-900 shadow-lg shadow-slate-900/10 lg:hidden"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
@@ -151,7 +161,7 @@ const Navbar = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.28, ease: 'easeOut' }}
-              className="overflow-hidden border-t border-slate-200 bg-white lg:hidden"
+              className="mt-3 w-full overflow-hidden rounded-3xl bg-white shadow-2xl shadow-slate-900/14 lg:hidden"
             >
               <div className="space-y-2 px-3 py-3">
                 {primaryLinks.map((link) => (
@@ -186,13 +196,13 @@ const Navbar = () => {
 
                 {user ? (
                   <>
-                    <div className="rounded-lg bg-slate-100 px-4 py-3 text-sm text-slate-700 font-medium">
+                    <div className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
                       Logged in as @{user.username}
                     </div>
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="w-full rounded-lg border border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                      className="w-full rounded-2xl bg-white px-4 py-3 text-left text-sm font-semibold text-slate-700 shadow-sm shadow-slate-900/8 transition hover:bg-rose-50 hover:text-rose-700"
                     >
                       Logout
                     </button>
@@ -204,7 +214,7 @@ const Navbar = () => {
                     </NavLink>
                     <NavLink
                       to="/register"
-                      className="block rounded-lg bg-slate-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+                      className="block rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold !text-white transition hover:bg-sky-700"
                       onClick={closeMenu}
                     >
                       Register

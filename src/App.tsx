@@ -37,12 +37,8 @@ const ProtectedRoute = ({ children, roles }: ProtectedRouteProps) => {
 
 const App: React.FC = () => {
   return (
-    <main className="relative min-h-screen overflow-x-clip bg-linear-to-br from-slate-100 via-white to-sky-100 text-slate-900">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-8rem] top-24 h-72 w-72 rounded-full bg-sky-200/40 blur-3xl" />
-        <div className="absolute right-[-5rem] top-0 h-80 w-80 rounded-full bg-cyan-100/60 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-64 w-64 rounded-full bg-amber-100/55 blur-3xl" />
-      </div>
+    <main className="relative min-h-screen overflow-x-clip bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_42%,#eef6ff_100%)] text-slate-900">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.045)_1px,transparent_1px)] bg-[size:48px_48px]" />
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <Navbar />

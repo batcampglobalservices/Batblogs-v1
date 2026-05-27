@@ -160,22 +160,22 @@ const SuperAdminPage = () => {
   }, [analytics]);
 
   const loadAnalytics = async () => {
-    const data = await apiRequest<AnalyticsPayload>('/superadmin/analytics?days=14');
+    const data = await apiRequest<AnalyticsPayload>('/api/v1/superadmin/analytics?days=14');
     setAnalytics(data);
   };
 
   const loadUsers = async () => {
-    const data = await apiRequest<UsersResponse>('/superadmin/users?limit=50');
+    const data = await apiRequest<UsersResponse>('/api/v1/superadmin/users?limit=50');
     setUsers(data.users);
   };
 
   const loadPosts = async () => {
-    const data = await apiRequest<PostsResponse>('/superadmin/posts?limit=30');
+    const data = await apiRequest<PostsResponse>('/api/v1/superadmin/posts?limit=30');
     setPosts(data.posts);
   };
 
   const loadCategories = async () => {
-    const data = await apiRequest<CategoriesResponse>('/categories?active=false');
+    const data = await apiRequest<CategoriesResponse>('/api/v1/categories?active=false');
     setCategories(data.categories);
   };
 
@@ -184,7 +184,7 @@ const SuperAdminPage = () => {
 
     try {
       const data = await apiRequest<AiHistoryResponse>(
-        '/ai/history?scope=all&limit=10&feature=moderation-review'
+        '/api/v1/ai/history?scope=all&limit=10&feature=moderation-review'
       );
       setAiHistory(data.history);
     } catch {
@@ -212,9 +212,10 @@ const SuperAdminPage = () => {
   }, [navigate]);
 
   useEffect(() => {
+
     const refreshInMs = (analytics?.refreshInSeconds || 15) * 1000;
     const interval = window.setInterval(() => {
-      apiRequest<AnalyticsPayload>('/superadmin/analytics?days=14')
+      apiRequest<AnalyticsPayload>('/api/v1/superadmin/analytics?days=14')
         .then(setAnalytics)
         .catch(() => undefined);
     }, refreshInMs);
@@ -227,7 +228,7 @@ const SuperAdminPage = () => {
     setIsBusy(true);
 
     try {
-      await apiRequest('/superadmin/users', {
+      await apiRequest('/api/v1/superadmin/users', {
         method: 'POST',
         body: JSON.stringify(newUser),
       });
@@ -258,7 +259,7 @@ const SuperAdminPage = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/users/${userId}/ban`, {
+      await apiRequest(`/api/v1/superadmin/users/${userId}/ban`, {
         method: 'PATCH',
         body: JSON.stringify({ reason }),
       });
@@ -275,7 +276,7 @@ const SuperAdminPage = () => {
   const handleUnbanUser = async (userId: string) => {
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/users/${userId}/unban`, {
+      await apiRequest(`/api/v1/superadmin/users/${userId}/unban`, {
         method: 'PATCH',
       });
       setNotice('User unbanned successfully.');
@@ -297,7 +298,7 @@ const SuperAdminPage = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/users/${userId}`, {
+      await apiRequest(`/api/v1/superadmin/users/${userId}`, {
         method: 'DELETE',
         body: JSON.stringify({ reason }),
       });
@@ -319,7 +320,7 @@ const SuperAdminPage = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/superadmin/posts/${postId}/delete`, {
+      await apiRequest(`/api/v1/superadmin/posts/${postId}/delete`, {
         method: 'PATCH',
         body: JSON.stringify({ reason }),
       });
@@ -342,7 +343,7 @@ const SuperAdminPage = () => {
 
     try {
       const data = await apiStreamRequest<ModerationReviewResponse>(
-        '/ai/moderation-review',
+        '/api/v1/ai/moderation-review',
         {
           method: 'POST',
           body: JSON.stringify({ postId }),
@@ -417,7 +418,7 @@ const SuperAdminPage = () => {
     setIsBusy(true);
 
     try {
-      await apiRequest('/categories', {
+      await apiRequest('/api/v1/categories', {
         method: 'POST',
         body: JSON.stringify(newCategory),
       });
@@ -438,7 +439,7 @@ const SuperAdminPage = () => {
 
     setIsBusy(true);
     try {
-      await apiRequest(`/categories/${categoryId}`, {
+      await apiRequest(`/api/v1/categories/${categoryId}`, {
         method: 'DELETE',
       });
       setNotice('Category deleted successfully.');

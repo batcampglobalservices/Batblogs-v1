@@ -9,43 +9,43 @@ import Reveal from './motion/Reveal';
 const slides = [
   {
     id: 1,
-    eyebrow: 'For curious readers',
-    stat: 'Fresh thinking daily',
-    title: 'Welcome to Bat Blogs',
+    eyebrow: 'AI field notes',
+    stat: 'Fresh thinking',
+    title: 'Read human stories about building with intelligent systems.',
     description:
-      'Discover a world of captivating stories and insights from our passionate bloggers.',
+      'A slick editorial stream for essays, product notes, research takeaways, and practical AI lessons.',
     imageUrl:
-      'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=80',
   },
   {
     id: 2,
-    eyebrow: 'For active writers',
+    eyebrow: 'For builders',
     stat: 'Write, refine, publish',
-    title: 'Join Our Community',
+    title: 'Turn experiments, prompts, and product lessons into stories.',
     description:
-      'Connect with like-minded individuals and share your own stories on Bat Blogs.',
+      'Publish ideas with a calm interface that keeps the focus on the thinking, not the tooling.',
     imageUrl:
-      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80',
   },
   {
     id: 3,
     eyebrow: 'For focused discovery',
-    stat: 'Ideas across every lane',
-    title: 'Explore Diverse Topics',
+    stat: 'Less noise',
+    title: 'Find signal across AI strategy, tools, and culture.',
     description:
-      'From technology to lifestyle, find blogs that cater to your interests on Bat Blogs.',
+      'Move through topics quickly, save your attention, and open the stories that actually matter.',
     imageUrl:
-      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1400&q=80',
   },
   {
     id: 4,
     eyebrow: 'For standout perspectives',
-    stat: 'Less noise, more signal',
-    title: 'Explore Diverse Topics',
+    stat: 'More signal',
+    title: 'A front page that feels curated, useful, and alive.',
     description:
-      'From technology to lifestyle, find blogs that cater to your interests on Bat Blogs.',
+      'Discover writing that connects technical progress to real people, teams, and decisions.',
     imageUrl:
-      'https://images.unsplash.com/photo-1519337265831-281ec6cc8514?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8QkxvZ3N8ZW58MHx8MHx8fDA%3D',
+      'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1400&q=80',
   },
 ];
 
@@ -66,9 +66,9 @@ const pulseItems = [
 
 const WelcomeComponent = () => {
   return (
-    <section className="px-4 pt-4 sm:px-6 md:px-10 md:pt-6">
+    <section className="px-4 py-8 sm:px-6 md:px-10 md:py-10">
       <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-        <div className="overflow-hidden rounded-4xl border border-white/70 bg-white/70 p-2 shadow-2xl shadow-slate-900/10 backdrop-blur">
+        <div className="overflow-hidden rounded-[2rem] bg-white/78 p-2 shadow-2xl shadow-slate-900/12 backdrop-blur">
           <Swiper
             modules={[Autoplay, Pagination]}
             slidesPerView={1}
@@ -76,17 +76,17 @@ const WelcomeComponent = () => {
             loop
             pagination={{ clickable: true }}
             autoplay={{ delay: 3400, disableOnInteraction: false }}
-            className="rounded-[1.75rem]"
+            className="rounded-[1.65rem]"
           >
             {slides.map((slide) => (
               <SwiperSlide key={slide.id}>
                 <div
-                  className="relative flex min-h-[28rem] flex-col justify-end overflow-hidden rounded-[1.75rem] bg-cover bg-center p-7 text-white sm:min-h-[32rem] sm:p-10"
+                  className="relative flex min-h-[25rem] flex-col justify-end overflow-hidden rounded-[1.65rem] bg-cover bg-center p-5 text-white sm:min-h-[30rem] sm:p-8 lg:p-10"
                   style={{
-                    backgroundImage: `linear-gradient(to top, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.22)), url(${slide.imageUrl})`,
+                    backgroundImage: `linear-gradient(to top, rgba(2, 6, 23, 0.86), rgba(15, 23, 42, 0.34), rgba(15, 23, 42, 0.04)), url(${slide.imageUrl})`,
                   }}
                 >
-                  <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-slate-950/55 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-slate-950/65 to-transparent" />
 
                   <motion.div
                     className="relative z-10 max-w-2xl"
@@ -94,20 +94,20 @@ const WelcomeComponent = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <span className="inline-flex rounded-3xl border border-white/20 bg-white/12 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/90 backdrop-blur-sm">
+                    <span className="inline-flex rounded-full bg-white/14 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-lg shadow-black/10 backdrop-blur-sm">
                       {slide.eyebrow}
                     </span>
 
-                    <div className="mt-5 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-100/90">
-                      <span className="rounded-3xl border border-white/18 bg-white/10 px-3 py-1.5">
+                    <div className="mt-5 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-100/90">
+                      <span className="rounded-full bg-white/12 px-3 py-1.5 shadow-sm shadow-black/10">
                         {slide.stat}
                       </span>
                       <span>Stories worth opening</span>
                     </div>
 
-                    <h1 className="mt-5 max-w-2xl text-3xl font-black leading-tight sm:text-4xl md:text-5xl">
+                    <h2 className="mt-5 max-w-2xl text-3xl font-black leading-tight sm:text-4xl md:text-5xl">
                       {slide.title}
-                    </h1>
+                    </h2>
                     <p className="mt-4 max-w-xl text-sm leading-7 text-white/85 sm:text-base">
                       {slide.description}
                     </p>
@@ -115,13 +115,13 @@ const WelcomeComponent = () => {
                     <div className="mt-7 flex flex-wrap gap-3">
                       <Link
                         to="/posts"
-                        className="rounded-3xl bg-white px-5 py-3 text-sm font-semibold text-white-950 transition hover:bg-sky-100"
+                        className="rounded-full bg-white px-5 py-3 text-sm font-bold !text-slate-950 shadow-xl shadow-black/20 transition hover:bg-sky-100"
                       >
                         Explore posts
                       </Link>
                       <Link
                         to="/new-blog"
-                        className="rounded-3xl border border-white/18 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/16"
+                        className="rounded-full bg-white/12 px-5 py-3 text-sm font-bold !text-white shadow-lg shadow-black/10 backdrop-blur-sm transition hover:bg-white/20"
                       >
                         Write a story
                       </Link>
@@ -134,7 +134,7 @@ const WelcomeComponent = () => {
         </div>
 
         <Reveal className="grid gap-4">
-          <div className="rounded-4xl border border-slate-900/10 bg-slate-950 p-6 text-white shadow-2xl shadow-slate-900/10">
+          <div className="rounded-[1.75rem] bg-slate-950 p-6 text-white shadow-2xl shadow-slate-900/16">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300">
               Inside today&apos;s edition
             </p>
@@ -149,7 +149,7 @@ const WelcomeComponent = () => {
           {pulseItems.map((item) => (
             <div
               key={item.title}
-              className="rounded-4xl border border-white/70 bg-white/72 p-5 shadow-lg shadow-slate-900/5 backdrop-blur"
+              className="rounded-[1.5rem] bg-white/82 p-5 shadow-xl shadow-slate-900/7 backdrop-blur"
             >
               <p className="text-sm font-semibold text-slate-950">{item.title}</p>
               <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
